@@ -8,17 +8,17 @@ import matplotlib.pyplot as plt
 import psutil
 import os
 
-# Tool URL (set to a local server for now)
-API_URL = 'http://127.0.0.1:8020/api/fibonacci'
 
-# Normal Synchronous API Call
+API_URL = 'http://127.0.0.1:8020/api/fibonacci' #please make sure the flask api and this is same 
+
+#Synchronous Call
 def normal_api_call(n):
     response = requests.post(API_URL, json={"n": n})
     if response.status_code == 200:
         return response.json()["result"]
     return None
 
-# Batch API Call
+#Batch API Call
 def batch_api_call(n, batch_size):
     results = []
     for _ in range(batch_size):
@@ -29,7 +29,7 @@ def batch_api_call(n, batch_size):
             results.append(response.json()["result"])
     return results
 
-# Asynchronous API Call
+#Asynchronous API Call
 async def async_api_call(n):
     async with aiohttp.ClientSession() as session:
         async with session.post(API_URL, json={"n": n}) as response:
@@ -44,7 +44,7 @@ async def benchmark_async_api_call(n, num_calls=100):
 def run_async_benchmark(n, num_calls=100):
     return asyncio.run(benchmark_async_api_call(n, num_calls))
 
-# Multithreaded API Call
+#Multithreaded API Call
 def threaded_api_call(n):
     response = requests.post(API_URL, json={"n": n})
     if response.status_code == 200:
@@ -55,7 +55,7 @@ def benchmark_threaded_api_call(n, num_calls=100):
         results = list(executor.map(threaded_api_call, [n] * num_calls))
     return [result for result in results if result is not None]
 
-# Multiprocessing API Call
+#Multiprocessing API Call
 def multiprocessing_api_call(n):
     response = requests.post(API_URL, json={"n": n})
     if response.status_code == 200:
@@ -66,7 +66,7 @@ def benchmark_multiprocessing_api_call(n, num_calls=100):
         results = pool.map(multiprocessing_api_call, [n] * num_calls)
     return [result for result in results if result is not None]
 
-# Function to measure CPU and memory usage
+#Function to measure CPU and memory usage
 def measure_resources():
     process = psutil.Process()
     cpu_usage = psutil.cpu_percent(interval=1)
@@ -107,7 +107,6 @@ def visualize_results(results, save_path='static/benchmark_results.png'):
     
     plt.figure(figsize=(10, 5))
     
-    # Plot total times
     plt.bar(methods, total_times, color='blue')
     plt.xlabel('Methods')
     plt.ylabel('Total Time (s)')
