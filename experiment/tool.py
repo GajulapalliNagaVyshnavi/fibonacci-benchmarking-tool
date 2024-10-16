@@ -11,3 +11,5 @@ def fibonacci_tool(n):
         for _ in range(2, n + 1):
             a, b = b, a + b
         return b
+
+# you can create a more complex function to visualize the different methods in different complexities 
