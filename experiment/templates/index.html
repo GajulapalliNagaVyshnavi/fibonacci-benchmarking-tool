@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benchmark Tool</title>
+</head>
+<body>
+    <h1>Benchmark API Call Methods</h1>
+    <form id="benchmarkForm">
+        <label for="n">Fibonacci Number (n):</label>
+        <input type="number" id="n" name="n" required>
+        <label for="num_calls">Number of Calls:</label>
+        <input type="number" id="num_calls" name="num_calls" required>
+        <button type="submit">Run Benchmark</button>
+    </form>
+    <div id="results"></div>
+    <img id="visualization" src="" alt="Visualization" style="display:none;">
+    <script>
+        document.getElementById('benchmarkForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch('/run_benchmark', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+            document.getElementById('results').innerText = JSON.stringify(data.results, null, 2);
+            document.getElementById('visualization').src = data.visualization;
+            document.getElementById('visualization').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
